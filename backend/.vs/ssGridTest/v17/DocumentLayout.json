@@ -5,6 +5,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{36113341-4774-49FC-9BD7-1B8F6AC95CC1}|ssGridTest\\ssGridTest.csproj|c:\\workspace\\ssgridtes\\backend\\ssgridtest\\controllers\\testgrid.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{36113341-4774-49FC-9BD7-1B8F6AC95CC1}|ssGridTest\\ssGridTest.csproj|solutionrelative:ssgridtest\\controllers\\testgrid.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36113341-4774-49FC-9BD7-1B8F6AC95CC1}|ssGridTest\\ssGridTest.csproj|c:\\workspace\\ssgridtes\\backend\\ssgridtest\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36113341-4774-49FC-9BD7-1B8F6AC95CC1}|ssGridTest\\ssGridTest.csproj|solutionrelative:ssgridtest\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 316,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -38,13 +42,26 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\workspace\\ssGridTes\\backend\\ssGridTest\\Program.cs",
+              "RelativeDocumentMoniker": "ssGridTest\\Program.cs",
+              "ToolTip": "C:\\workspace\\ssGridTes\\backend\\ssGridTest\\Program.cs",
+              "RelativeToolTip": "ssGridTest\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-19T08:53:45.535Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "TestGrid.cs",
               "DocumentMoniker": "C:\\workspace\\ssGridTes\\backend\\ssGridTest\\Controllers\\TestGrid.cs",
               "RelativeDocumentMoniker": "ssGridTest\\Controllers\\TestGrid.cs",
               "ToolTip": "C:\\workspace\\ssGridTes\\backend\\ssGridTest\\Controllers\\TestGrid.cs",
               "RelativeToolTip": "ssGridTest\\Controllers\\TestGrid.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAmwDcAAABWAAAAAAAAAA==",
+              "ViewState": "AgIAADUAAAAAAAAAAAAgwFEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-18T08:12:43.048Z",
               "EditorCaption": ""

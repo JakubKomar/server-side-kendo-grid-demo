@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ssGridTest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2c8c77ee3a9d731a95c7cdedba16fe962dbac51b")]
 [assembly: System.Reflection.AssemblyProductAttribute("ssGridTest")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ssGridTest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

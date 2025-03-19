@@ -1,61 +1,78 @@
-import React, { useState } from 'react';
-import { Grid, GridColumn as Column, GridItemChangeEvent } from '@progress/kendo-react-grid';
-import products from './gd-products';
+import React, { useState } from "react";
+import { Grid, GridColumn, GridDataStateChangeEvent } from "@progress/kendo-react-grid";
+import { DataResult, State } from "@progress/kendo-data-query";
+import axios from "axios";
 import "@progress/kendo-theme-default/dist/all.css"
 
-interface ProductCategory {
-  CategoryID?: number;
-  CategoryName?: string;
-  Description?: string;
-}
 
-interface Product {
-  ProductID: number;
-  ProductName?: string;
-  SupplierID?: number;
-  CategoryID?: number;
-  QuantityPerUnit?: string;
-  UnitPrice?: number;
-  UnitsInStock?: number;
-  UnitsOnOrder?: number;
-  ReorderLevel?: number;
-  Discontinued?: boolean;
-  Category?: ProductCategory;
-  inEdit?: boolean | string;
-}
+const KendoGrid: React.FC = () => {
+  const [data, setData] = useState<DataResult>({ data: [], total: 0 });
+  const [dataState, setDataState] = useState<State>({
+    skip: 0,
+    take: 5,
+    sort: [{ field: "name", dir: "asc" }],
+    filter: {
+      logic: "and",
+      filters: [],
+    },
+  });
 
-const App = () => {
-  const [data, setData] = useState<Array<Product>>(products);
+  const fetchData = async (state: State) => {
+    try {
+      const page = Math.floor((state.skip || 0) / (state.take || 1)) + 1;
+      const pageSize = state.take;
 
-  const handleItemChange = (event: GridItemChangeEvent) => {
-    const newData = data.map((item) =>
-      item.ProductID === event.dataItem.ProductID ? { ...item, [event.field!]: event.value } : item
-    );
-    setData(newData);
+      const requestPayload = {
+        page,
+        pageSize,
+        sort: state.sort,
+        filter: state.filter,
+      };
+      console.log("Reguest:", requestPayload);
+      const response = await axios.post("/api/TestGrid", requestPayload);
+      console.log("Data:", response.data);
+
+      // Format the response data to match the expected DataResult structure
+      const formattedData: DataResult = {
+        data: response.data,
+        total: response.data.length, // Update this if your API returns the total count separately
+      };
+
+      setData(formattedData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const handleDataStateChange = (event: GridDataStateChangeEvent) => {
+    const newState = event.dataState;
+    setDataState(newState);
+    fetchData(newState);
   };
 
   return (
     <Grid
-      style={{ height: '900px' }}
-      data={data}
-      dataItemKey="ProductID"
-      autoProcessData={true}
-      sortable={true}
-      pageable={true}
-      filterable={true}
-      editable={{ mode: 'incell' }}
+      data={data.data}
       defaultSkip={0}
-      defaultTake={20}
-      onItemChange={handleItemChange}
+      defaultTake={5}
+      pageable={{
+        buttonCount: 4,
+        pageSizes: [5, 10, 15]
+      }}
+      sortable
+      filterable
+      {...dataState}
+      onDataStateChange={handleDataStateChange}
+      total={data.total}
     >
-      <Column field="ProductID" title="ID" editable={false} filterable={false} width="75px" />
-      <Column field="ProductName" title="Name" editor="text" />
-      <Column field="Category.CategoryName" title="Category" editable={false} width="200px"></Column>
-      <Column field="UnitPrice" title="Price" editor="numeric" width="150px" />
-      <Column field="UnitsInStock" title="In stock" editor="numeric" width="150px" />
-      <Column field="Discontinued" title="Discontinued" editor="boolean" width="150px" />
+      <GridColumn field="id" title="ID" width="100px" />
+      <GridColumn field="name" title="Name" />
+      <GridColumn field="brand" title="brand" />
+      <GridColumn field="price" title="price" filter="numeric" />
+      <GridColumn field="addeddate" title="addedDate" />
+
     </Grid>
   );
 };
 
-export default App;
+export default KendoGrid;

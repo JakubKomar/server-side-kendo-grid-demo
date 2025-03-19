@@ -368,3 +368,4 @@ C:\workspace\ssGridTes\backend\ssGridTest\obj\Debug\net8.0\refint\ssGridTest.dll
 C:\workspace\ssGridTes\backend\ssGridTest\obj\Debug\net8.0\ssGridTest.pdb
 C:\workspace\ssGridTes\backend\ssGridTest\obj\Debug\net8.0\ssGridTest.genruntimeconfig.cache
 C:\workspace\ssGridTes\backend\ssGridTest\obj\Debug\net8.0\ref\ssGridTest.dll
+C:\workspace\ssGridTes\backend\ssGridTest\obj\Debug\net8.0\ssGridTest.sourcelink.json
