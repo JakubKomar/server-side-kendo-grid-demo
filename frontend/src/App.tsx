@@ -1,78 +1,71 @@
-import React, { useState } from "react";
-import { Grid, GridColumn, GridDataStateChangeEvent } from "@progress/kendo-react-grid";
-import { DataResult, State } from "@progress/kendo-data-query";
-import axios from "axios";
+import * as React from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import {
+  Grid,
+  GridColumn,
+  GridDataStateChangeEvent,
+} from '@progress/kendo-react-grid';
+import { State, DataResult, toDataSourceRequestString } from '@progress/kendo-data-query';
+import axios from 'axios';
 import "@progress/kendo-theme-default/dist/all.css"
+const CustomCell = (props: any) => {
+  return (
+    <td {...props.tdProps}>
+      <span style={{ color: 'crimson' }}>${props.dataItem[props.field]}</span>
+    </td>
+  );
+};
 
+const initialState: State = {
+  take: 10,
+  skip: 0,
+  group: [],
+};
 
-const KendoGrid: React.FC = () => {
-  const [data, setData] = useState<DataResult>({ data: [], total: 0 });
-  const [dataState, setDataState] = useState<State>({
-    skip: 0,
-    take: 5,
-    sort: [{ field: "name", dir: "asc" }],
-    filter: {
-      logic: "and",
-      filters: [],
-    },
-  });
+export const GridComponent = () => {
+  const [gridData, setGridData] = useState<DataResult>({ data: [], total: 0 });
+  const [dataState, setDataState] = useState<State>(initialState);
 
-  const fetchData = async (state: State) => {
+  const fetchData = useCallback(async (state: State) => {
     try {
-      const page = Math.floor((state.skip || 0) / (state.take || 1)) + 1;
-      const pageSize = state.take;
-
-      const requestPayload = {
-        page,
-        pageSize,
-        sort: state.sort,
-        filter: state.filter,
-      };
-      console.log("Reguest:", requestPayload);
-      const response = await axios.post("/api/TestGrid", requestPayload);
-      console.log("Data:", response.data);
-
-      // Format the response data to match the expected DataResult structure
-      const formattedData: DataResult = {
-        data: response.data,
-        total: response.data.length, // Update this if your API returns the total count separately
-      };
-
-      setData(formattedData);
+      const queryString = toDataSourceRequestString(state);
+      const response = await axios.get<DataResult>(
+        `https://localhost:7079/api/TestGrid/getProductsQuery?${queryString}`
+      );
+      setGridData(response.data);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Failed to fetch data:', error);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchData(dataState);
+  }, [dataState, fetchData]);
 
   const handleDataStateChange = (event: GridDataStateChangeEvent) => {
-    const newState = event.dataState;
-    setDataState(newState);
-    fetchData(newState);
+    setDataState(event.dataState);
   };
 
   return (
     <Grid
-      data={data.data}
-      defaultSkip={0}
-      defaultTake={5}
-      pageable={{
-        buttonCount: 4,
-        pageSizes: [5, 10, 15]
-      }}
+      style={{ height: '520px' }}
+      data={gridData}
+      {...dataState}
+      pageable
       sortable
       filterable
-      {...dataState}
+      groupable
+      resizable
+      navigatable
       onDataStateChange={handleDataStateChange}
-      total={data.total}
+      dataItemKey="Id"
     >
-      <GridColumn field="id" title="ID" width="100px" />
-      <GridColumn field="name" title="Name" />
-      <GridColumn field="brand" title="brand" />
-      <GridColumn field="price" title="price" filter="numeric" />
-      <GridColumn field="addeddate" title="addedDate" />
-
+      <GridColumn field="id" title="ID" width="50px" />
+      <GridColumn field="name" title="Name" width="300px" />
+      <GridColumn field="price" title="Price" width="150px" filter="numeric" cell={CustomCell} />
+      <GridColumn field="addedDate" title="Added Date" width="200px" />
+      <GridColumn field="brand" title="Brand" width="200px" />
     </Grid>
   );
 };
-
-export default KendoGrid;
+export default GridComponent;
