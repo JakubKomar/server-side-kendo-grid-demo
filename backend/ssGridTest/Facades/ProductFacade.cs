@@ -1,27 +1,10 @@
-﻿
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using static ssGridTest.Controllers.TestGrid;
+﻿using ssGridTest.Ef;
 
-namespace ssGridTest.Controllers
+namespace ssGridTest.Facades
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class TestGrid : ControllerBase
+    public class ProductFacade : IProductFacade
     {
-        public class Product
-        {
-            public int Id { get; set; }
-            public string Name { get; set; }
-            public decimal Price { get; set; }
-            public DateTime AddedDate { get; set; }
-            public string Brand { get; set; }
-        }
-
-        List<Product> products = new()
+        private static List<Product> products = new()
         {
             new Product { Id = 1, Name = "iPhone 13 Ultra", Price = 1299, AddedDate = DateTime.Now.AddDays(-1), Brand = "Apple" },
             new Product { Id = 2, Name = "Galaxy S22 Pro", Price = 999, AddedDate = DateTime.Now.AddDays(-2), Brand = "Samsung" },
@@ -65,21 +48,12 @@ namespace ssGridTest.Controllers
             new Product { Id = 40, Name = "MSI Prestige 14", Price = 999, AddedDate = DateTime.Now.AddDays(-40), Brand = "MSI" },
         };
 
-        [HttpGet]
-        [Route("getAll")]
-        public IActionResult GetAll()
-        {
-            return Ok(products);
-        }
+        /// <summary>
+        /// Získá všechny produkty
+        /// </summary>
+        /// <returns></returns>
+        public IQueryable<Product> GetProducts() =>
+            products.AsQueryable();
 
-        [HttpPost]
-        public IActionResult GetProducts([FromBody] DataSourceRequest request)
-        {
-            var data = products.ToDataSourceResult(request);
-            return Ok(data);
-        }
     }
-
-
 }
-

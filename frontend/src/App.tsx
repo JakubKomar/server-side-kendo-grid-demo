@@ -1,13 +1,23 @@
 import * as React from 'react';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Grid,
   GridColumn,
-  GridDataStateChangeEvent,
+  GridGroupChangeEvent,
+  GridGroupExpandChangeEvent
 } from '@progress/kendo-react-grid';
-import { State, DataResult, toDataSourceRequestString } from '@progress/kendo-data-query';
+import { GroupExpandDescriptor } from '@progress/kendo-react-data-tools';
+import {
+  groupBy,
+  GroupDescriptor,
+  State,
+  process,
+  toDataSourceRequestString
+} from '@progress/kendo-data-query';
 import axios from 'axios';
-import "@progress/kendo-theme-default/dist/all.css"
+import "@progress/kendo-theme-default/dist/all.css";
+import { group } from 'console';
+
 const CustomCell = (props: any) => {
   return (
     <td {...props.tdProps}>
@@ -17,55 +27,55 @@ const CustomCell = (props: any) => {
 };
 
 const initialState: State = {
-  take: 10,
   skip: 0,
-  group: [],
+  take: 10,
 };
 
 export const GridComponent = () => {
-  const [gridData, setGridData] = useState<DataResult>({ data: [], total: 0 });
+  const [products, setProducts] = useState<[]>([]);
   const [dataState, setDataState] = useState<State>(initialState);
 
-  const fetchData = useCallback(async (state: State) => {
-    try {
-      const queryString = toDataSourceRequestString(state);
-      const response = await axios.get<DataResult>(
-        `https://localhost:7079/api/TestGrid/getProductsQuery?${queryString}`
-      );
-      setGridData(response.data);
-    } catch (error) {
-      console.error('Failed to fetch data:', error);
-    }
-  }, []);
-
   useEffect(() => {
-    fetchData(dataState);
-  }, [dataState, fetchData]);
+    const fetchProducts = async () => {
+      try {
+        const queryString = toDataSourceRequestString(dataState);
+        const response = await axios.get(`https://localhost:7079/api/ProductContrroler?${queryString}`);
+        setProducts(response.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
 
-  const handleDataStateChange = (event: GridDataStateChangeEvent) => {
+    fetchProducts();
+  }, [dataState]);
+
+  const handleDataStateChange = (event: any) => {
     setDataState(event.dataState);
   };
 
   return (
     <Grid
-      style={{ height: '520px' }}
-      data={gridData}
+      data={products}
       {...dataState}
-      pageable
+      pageable={{
+        buttonCount: 4,
+        pageSizes: [5, 10, 15]
+      }}
       sortable
       filterable
-      groupable
+      onDataStateChange={handleDataStateChange}
+
+      dataItemKey="id"
       resizable
       navigatable
-      onDataStateChange={handleDataStateChange}
-      dataItemKey="Id"
     >
-      <GridColumn field="id" title="ID" width="50px" />
+      <GridColumn field="id" title="ID" width="50px" filter="numeric" />
       <GridColumn field="name" title="Name" width="300px" />
-      <GridColumn field="price" title="Price" width="150px" filter="numeric" cell={CustomCell} />
-      <GridColumn field="addedDate" title="Added Date" width="200px" />
+      <GridColumn field="price" title="Price" width="150px" filter="numeric" />
+      <GridColumn field="addedDate" title="Added Date" format="{0:dd.MM.yy}" filter="date" width="200px" />
       <GridColumn field="brand" title="Brand" width="200px" />
     </Grid>
   );
 };
+
 export default GridComponent;

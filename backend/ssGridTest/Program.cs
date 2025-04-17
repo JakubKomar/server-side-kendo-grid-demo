@@ -1,6 +1,9 @@
 
 
 
+using ssGridTest.Facades;
+using ssGridTest.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -10,7 +13,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+    {
+        c.EnableAnnotations();
+    });
+
+builder.Services.AddScoped<IProductFacade, ProductFacade>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddCors(options =>
 {
@@ -24,12 +33,12 @@ builder.Services.AddCors(options =>
 
 
 var app = builder.Build();
-app.UseCors("AllowAll");
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
+    app.UseSwagger(c => { c.SerializeAsV2 = true; });
     app.UseSwaggerUI();
 }
 
@@ -38,7 +47,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.UseCors("AllowAll");
 
 
 
