@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
+using GridSeverSideDemo.Dto;
 using GridSeverSideDemo.Ef;
 using GridSeverSideDemo.Facades;
-using GridSeverSideDemo.Dto;
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
 
 namespace GridSeverSideDemo.Services
 {
@@ -35,6 +35,7 @@ namespace GridSeverSideDemo.Services
         public async Task<DataSourceResult> GetProductsAsync(DataSourceRequest dataSourceRequest) =>
              await _productFacade
                 .GetProducts()
+                .Where(s => s.Id > 0)
                 .ProjectTo<ProductDto>(mapperConfiguration)
                 .ToDataSourceResultAsync(dataSourceRequest);
 

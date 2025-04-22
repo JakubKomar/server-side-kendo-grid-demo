@@ -50,5 +50,4 @@ export const GridComponent = () => {
     </Grid>
   );
 };
-
 export default GridComponent;
