@@ -1,45 +1,21 @@
-import * as React from 'react';
 import { useState, useEffect } from 'react';
-import {
-  Grid,
-  GridColumn,
-  GridGroupChangeEvent,
-  GridGroupExpandChangeEvent
-} from '@progress/kendo-react-grid';
-import { GroupExpandDescriptor } from '@progress/kendo-react-data-tools';
-import {
-  groupBy,
-  GroupDescriptor,
-  State,
-  process,
-  toDataSourceRequestString
-} from '@progress/kendo-data-query';
+import { Grid, GridColumn } from '@progress/kendo-react-grid';
+import { State, toDataSourceRequestString } from '@progress/kendo-data-query';
 import axios from 'axios';
 import "@progress/kendo-theme-default/dist/all.css";
-import { group } from 'console';
-
-const CustomCell = (props: any) => {
-  return (
-    <td {...props.tdProps}>
-      <span style={{ color: 'crimson' }}>${props.dataItem[props.field]}</span>
-    </td>
-  );
-};
-
-const initialState: State = {
-  skip: 0,
-  take: 10,
-};
 
 export const GridComponent = () => {
   const [products, setProducts] = useState<[]>([]);
-  const [dataState, setDataState] = useState<State>(initialState);
+  const [dataState, setDataState] = useState<State>({ skip: 0, take: 10, });
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        const urlBase = "https://localhost:7079/api/Product";
+
         const queryString = toDataSourceRequestString(dataState);
-        const response = await axios.get(`https://localhost:7079/api/ProductContrroler?${queryString}`);
+        const response = await axios.get(`${urlBase}?${queryString}`);
+
         setProducts(response.data);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -57,23 +33,20 @@ export const GridComponent = () => {
     <Grid
       data={products}
       {...dataState}
-      pageable={{
-        buttonCount: 4,
-        pageSizes: [5, 10, 15]
-      }}
+      pageable={{ buttonCount: 4, pageSizes: [5, 10, 15] }}
       sortable
       filterable
-      onDataStateChange={handleDataStateChange}
-
-      dataItemKey="id"
       resizable
       navigatable
+
+      onDataStateChange={handleDataStateChange}
+      dataItemKey="id"
     >
-      <GridColumn field="id" title="ID" width="50px" filter="numeric" />
-      <GridColumn field="name" title="Name" width="300px" />
-      <GridColumn field="price" title="Price" width="150px" filter="numeric" />
-      <GridColumn field="addedDate" title="Added Date" format="{0:dd.MM.yy}" filter="date" width="200px" />
-      <GridColumn field="brand" title="Brand" width="200px" />
+      <GridColumn field="id" title="ID" filter="numeric" width="250px" />
+      <GridColumn field="name" title="Name" width="250px" />
+      <GridColumn field="price" title="Price" filter="numeric" format="{0:d} $" width="250px" />
+      <GridColumn field="addedDate" title="Added Date" filter="date" format="{0:dd.MM.yy}" width="250px" />
+      <GridColumn field="brand" title="Brand" width="250px" />
     </Grid>
   );
 };

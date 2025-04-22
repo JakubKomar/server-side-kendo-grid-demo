@@ -1,6 +1,6 @@
 ﻿using Kendo.Mvc.UI;
 
-namespace ssGridTest.Services
+namespace GridSeverSideDemo.Services
 {
     public interface IProductService
     {

@@ -1,4 +1,4 @@
-﻿namespace ssGridTest.Dto
+﻿namespace GridSeverSideDemo.Dto
 {
     public class ProductDto
     {

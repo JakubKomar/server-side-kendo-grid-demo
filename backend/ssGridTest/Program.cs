@@ -1,8 +1,5 @@
-
-
-
-using ssGridTest.Facades;
-using ssGridTest.Services;
+using GridSeverSideDemo.Facades;
+using GridSeverSideDemo.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

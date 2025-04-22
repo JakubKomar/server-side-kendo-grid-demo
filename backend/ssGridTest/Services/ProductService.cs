@@ -2,11 +2,11 @@
 using AutoMapper.QueryableExtensions;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
-using ssGridTest.Dto;
-using ssGridTest.Ef;
-using ssGridTest.Facades;
+using GridSeverSideDemo.Ef;
+using GridSeverSideDemo.Facades;
+using GridSeverSideDemo.Dto;
 
-namespace ssGridTest.Services
+namespace GridSeverSideDemo.Services
 {
     public class ProductService : IProductService
     {

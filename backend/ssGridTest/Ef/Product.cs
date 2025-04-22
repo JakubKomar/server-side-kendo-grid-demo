@@ -1,4 +1,4 @@
-﻿namespace ssGridTest.Ef
+﻿namespace GridSeverSideDemo.Ef
 {
     public class Product
     {

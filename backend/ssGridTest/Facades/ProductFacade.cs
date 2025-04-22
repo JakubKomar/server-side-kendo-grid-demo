@@ -1,6 +1,6 @@
-﻿using ssGridTest.Ef;
+﻿using GridSeverSideDemo.Ef;
 
-namespace ssGridTest.Facades
+namespace GridSeverSideDemo.Facades
 {
     public class ProductFacade : IProductFacade
     {

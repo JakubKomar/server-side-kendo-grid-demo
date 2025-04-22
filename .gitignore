@@ -1,2 +1,6 @@
 frontend/telerik-license.txt
 backend/ssGridTest/telerik-license.txt
+/backend/ssGridTest/bin
+/backend/ssGridTest/obj
+/backend/ssGridTest/bin
+/backend/.vs

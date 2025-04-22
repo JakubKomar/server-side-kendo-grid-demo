@@ -1,6 +1,6 @@
 ﻿using Kendo.Mvc.UI;
 
-namespace ssGridTest.Dto
+namespace GridSeverSideDemo.Dto
 {
     /// <summary>
     /// Kendo typový datasourceresult - generický datový typ pro dokumentační účely swageru - nahraď typ očekavaným návratovým typem
